@@ -120,7 +120,9 @@ class Mybatisplus02DqlApplicationTests {
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         //模糊匹配 like
         //范围查询 lt le gt ge eq between
-        lqw.like(User::getName,"J");
+//        lqw.like(User::getName,"J");
+//        lqw.likeLeft(User::getName,"J");
+        lqw.likeRight(User::getName,"J");
         List<User> userList = userDao.selectList(lqw);
         System.out.println(userList);
     }
