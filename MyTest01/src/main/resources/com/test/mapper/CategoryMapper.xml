@@ -6,22 +6,63 @@
 <mapper namespace="com.test.mapper.CategoryMapper">
 
     <resultMap id="CategoryResultMap" type="category">
-        <result column="id" property="cid"/>
+        <result property="cid" column="id"/>
+    </resultMap>
+
+    <resultMap id="CategoryResultMap2" type="Category">
+        <id property="cid" column="id"/>
+        <result property="cname" column="cname"/>
+        <result property="book_describe" column="book_describe"/>
+        <collection property="bs" column="id" select="com.test.mapper.BookMapper.findBookById"/>
+    </resultMap>
+
+    <resultMap id="CategoryResultMap3" type="Category">
+        <id property="cid" column="id"/>
+        <result property="cname" column="cname"/>
+        <result property="book_describe" column="book_describe"/>
+        <collection property="bs" ofType="Book">
+            <id property="id" column="bid"/>
+            <result property="bookName" column="bname"/>
+            <result property="isbn" column="isbn"/>
+            <result property="author" column="author"/>
+            <result property="price" column="price"/>
+            <result property="press" column="press"/>
+        </collection>
     </resultMap>
 
     <select id="findCategoryByIdTest" resultMap="CategoryResultMap">
         select *
-        from  book_info
+        from category
         where id = #{cid};
     </select>
 
+    <select id="findCategoryById" resultMap="CategoryResultMap2">
+        select *
+        from category
+        where id = #{id}
+    </select>
+
+    <select id="findCategoryByIdYDJG" resultMap="CategoryResultMap3" parameterType="int">
+        select c.*,
+               b.id       bid,
+               b.bookName bname,
+               b.isbn,
+               b.author,
+               b.price,
+               b.press
+        from category c,
+             book b
+        where b.typeId = c.id
+          and c.id = #{id}
+    </select>
+
     <insert id="addCategory" useGeneratedKeys="true" keyProperty="cid">
-        insert into book_info (cname, book_describe)
+        insert into category (cname, book_describe)
         VALUES (#{cname}, #{book_describe})
     </insert>
 
     <update id="updateCategory">
-        update book_info
+        update category
         <set>
             <if test="cname != null and cname != ''">
                 cname = #{cname},

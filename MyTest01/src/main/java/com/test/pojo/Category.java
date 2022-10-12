@@ -1,8 +1,8 @@
 package com.test.pojo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.List;
 
 /**
  * @Author: ablaze
@@ -12,6 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     /**
      * id 主键
@@ -25,4 +27,6 @@ public class Category {
      * 密码
      */
     private String book_describe;
+
+    private List<Book> bs;
 }
